@@ -5,4 +5,6 @@ public interface CategoryService {
     Category findById(String id);
 
     void addCategory(Category category);
+    void deleteByCateId(String id);
+    void updateByCateID(String id,Category category);
 }

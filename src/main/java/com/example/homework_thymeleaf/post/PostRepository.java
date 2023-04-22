@@ -30,18 +30,12 @@ public class PostRepository {
     public List<Post> findPostByUserId(String id){
         return postList.stream().filter(post -> post.getUser().getUuid().equalsIgnoreCase(id)).collect(Collectors.toList());
     }
-    public void removePostByUserId(String uuid){
-        postList=postList.stream().filter(post -> !post.getUuid().equalsIgnoreCase(uuid)).collect(Collectors.toList());
-    }
     public Post findPostById(String id){
         return postList.stream().filter(post -> post.getUuid().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
     @Autowired
     public void setFaker(Faker faker) {
         this.faker = faker;
-    }
-    List<Post> findAllPost(){
-        return postList;
     }
     @PostConstruct
     void init(){
@@ -82,6 +76,10 @@ public class PostRepository {
             ));
         }};
     }
+//    select
+    List<Post> findAllPost(){
+        return postList;
+    }
     List<Post> findByCategory(String cate){
         return postList.stream().
                 filter(post -> post.getCategoryList().stream().
@@ -96,16 +94,24 @@ public class PostRepository {
 //            }
 //        }
     }
+//    add
     void addPost(Post post) {
         postList.add(post);
     }
+//    update
     void updatePostById(String id,Post post){
-        for (Post p : postList) {
-            if (p.getUuid().equalsIgnoreCase(id)) {
-                postList.set(postList.indexOf(p), post);
-                System.out.println("success");
-                break;
-            }
-        }
+        postList.stream()
+                .filter(p -> p.getUuid().equalsIgnoreCase(id))
+                .findFirst()
+                .ifPresent(p -> {
+                    postList.set(postList.indexOf(p), post);
+                    System.out.println("success");
+                });
+
     }
+//    remove
+    public void removePostByUserId(String uuid){
+        postList=postList.stream().filter(post -> !post.getUuid().equalsIgnoreCase(uuid)).collect(Collectors.toList());
+    }
+
 }

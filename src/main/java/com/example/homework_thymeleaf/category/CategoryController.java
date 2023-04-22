@@ -21,5 +21,12 @@ public class CategoryController {
     public void addCategory(Category category){
         categoryService.addCategory(category);
     }
+    public void deleteCateByID(String id){
+        categoryService.deleteByCateId(id);
+    }
+    public void updateCateById(String id,Category category){
+        categoryService.updateByCateID(id,category);
+    }
+
 
 }

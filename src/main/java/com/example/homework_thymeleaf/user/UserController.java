@@ -15,24 +15,30 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServerImp userServerImp;
+    private final UserService userServer;
     private final PostController postController;
 
     public List<User> findAllUser() {
-        return userServerImp.findAllUser();
+        return userServer.findAllUser();
+    }
+    public void deleteUserByID(String id){
+        userServer.deleteUserById(id);
+    }
+    public void updateUserByID(String id,User user){
+        userServer.updateUserById(id);
     }
     public User findUserById(String id){
-        return userServerImp.findUserById(id);
+        return userServer.findUserById(id);
     }
     @GetMapping("/user-view")
     String viewUser(Model model) {
-        model.addAttribute("users", userServerImp.findAllUser());
+        model.addAttribute("users", userServer.findAllUser());
         return "page/user";
     }
 
     @GetMapping("/user-view/{uuid}")
     String viewUserDetail(@PathVariable("uuid") String uuid, Model model) {
-        model.addAttribute("user", userServerImp.findUserById(uuid));
+        model.addAttribute("user", userServer.findUserById(uuid));
         model.addAttribute("posts",postController.findPostByUserId(uuid));
         return "page/view-user-detail";
     }

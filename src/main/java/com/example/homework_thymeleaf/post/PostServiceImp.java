@@ -25,32 +25,32 @@ public class PostServiceImp implements PostService{
     public List<Post> findByCategory(String category) {
         return postRepository.findByCategory(category);
     }
-
+//  find post by user id
     @Override
     public List<Post> findPostByUserId(String id) {
         return postRepository.findPostByUserId(id);
     }
-
+//  remove
     @Override
     public void removePost(String id) {
         postRepository.removePostByUserId(id);
     }
-
+//  select by id
     @Override
     public Post findPostById(String id) {
         return postRepository.findPostById(id);
     }
-
+//  select
     @Override
     public List<User> findAllUser() {
         return userRepository.findAllUser();
     }
-
+//  search
     @Override
     public User findUserById(String id) {
         return postRepository.findUserById(id);
     }
-
+//  add post
     @Override
     public boolean addPost(Post post, MultipartFile file) {
         FileUpload fileUpload=fileUploadService.uploadSingle(file);
@@ -61,7 +61,7 @@ public class PostServiceImp implements PostService{
         }
         return false;
     }
-
+//  update post
     @Override
     public boolean updatePost(Post post, String id, MultipartFile file) {
         FileUpload fileUpload=fileUploadService.uploadSingle(file);
@@ -72,7 +72,7 @@ public class PostServiceImp implements PostService{
         }
         return false;
     }
-
+//    update
     @Override
     public void updatePostEmptyFile(Post post, String id) {
         post.setUuid(id);

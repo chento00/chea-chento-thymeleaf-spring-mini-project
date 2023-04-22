@@ -21,20 +21,32 @@ import java.util.stream.Collectors;
 public class UserRepository {
     private Faker faker;
     private List<User> userList;
-//    private List<ViewUserDTO> viewUser;
     @Autowired
     void setFaker(Faker faker){
         this.faker=faker;
     }
+    void deleteUser(String id){
+        userList=userList.stream().filter(user -> !user.getUuid().equalsIgnoreCase(id)).collect(Collectors.toList());
+    }
+//    update
+    void updateUser(String id){
+        userList.stream()
+                .filter(user -> user.getUuid().equalsIgnoreCase(id))
+                .findFirst()
+                .ifPresent(user -> userList.set(userList.indexOf(user), user));
+    }
+//    select all
     public List<User> findAllUser(){
         return userList;
     }
+//    search by id
     public User findUserById(String id){
         return userList.stream().
                 filter(user -> user.getUuid().equals(id)).
                 findFirst().
                 orElse(null);
     }
+//    add
     void addUser(User user){
         userList.add(user);
     }
@@ -70,15 +82,5 @@ public class UserRepository {
                     "3.jpg"
             ));
         }};
-//        viewUser=new ArrayList<>(){{
-//            for(User userlst: userList){
-//                add(new ViewUserDTO(
-//                        userlst.getName(),
-//                        userlst.getDescription(),
-//                        userlst.getImage()
-//                ));
-//            }
-//        }};
-
     }
 }

@@ -6,4 +6,6 @@ public interface UserService {
     List<User> findAllUser();
     User findUserById(String id);
     void addUser(User user);
+    void deleteUserById(String id);
+    void updateUserById(String id);
 }

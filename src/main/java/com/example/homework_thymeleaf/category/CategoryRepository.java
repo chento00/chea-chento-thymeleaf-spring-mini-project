@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,14 +20,33 @@ public class CategoryRepository {
     void setFaker(Faker faker){
         this.faker=faker;
     }
+//    delete category
+    void deleteCategoryById(String id){
+        categoryList=categoryList.stream().
+                filter(category -> !category.getUuid().equalsIgnoreCase(id)).
+                collect(Collectors.toList());
+    }
+//   update category
+    void updateCategoryById(String id,Category category){
+        for(int i=0;i<categoryList.size();i++){
+            if(categoryList.get(i).getUuid().equalsIgnoreCase(id)){
+                categoryList.set(i,category);
+            }
+        }
+    }
     List<Category> findAllCategory(){
         return categoryList;
     }
+//    findByIs
     Category findById(String id){
         return categoryList.stream().
                 filter(category -> category.getUuid().equals(id)).
                 findFirst().
                 orElse(null);
+    }
+//    insert
+    public void addCategory(Category category) {
+        categoryList.add(category);
     }
     @PostConstruct
     void init(){
@@ -48,9 +68,5 @@ public class CategoryRepository {
                     "Science"
             ));
         }};
-    }
-
-    public void addCategory(Category category) {
-        categoryList.add(category);
     }
 }

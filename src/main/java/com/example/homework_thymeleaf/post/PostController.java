@@ -120,11 +120,3 @@ public class PostController {
     }
 
 }
-//        DataSize maxSize = DataSize.parse(maxFileSize);
-//        if(result.hasErrors() || file.getSize() > maxSize.toBytes()){
-//            model.addAttribute("article", post);
-//            model.addAttribute("users",postService.findAllUser());
-//            model.addAttribute("categories",categoryController.findAllCategory());
-//            model.addAttribute("error", "File size exceeds the maximum allowed size");
-//            return "page/add-post";
-//        }
