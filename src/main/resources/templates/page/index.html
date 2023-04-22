@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master-layout}"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+
+
+        #btn-popup:hover {
+            opacity:1;
+        }
+
+        /* Float cancel and delete buttons and add an equal width */
+        .cancelbtn, .deletebtn {
+            float: left;
+            width: 50%;
+            cursor: pointer;
+        }
+
+        /* Add a color to the cancel button */
+        .cancelbtn {
+            background-color: #ccc;
+            color: black;
+        }
+
+        /* Add a color to the delete button */
+        .deletebtn {
+            background-color: #f44336;
+        }
+
+        /* Add padding and center-align text to the container */
+        .con-pop {
+            padding: 16px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: aliceblue;
+            padding-top: 50px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 40%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Style the horizontal ruler */
+        hr {
+            border: 1px solid #f1f1f1;
+            margin-bottom: 25px;
+        }
+
+        /* The Modal Close Button (x) */
+        .close {
+            position: absolute;
+            right: 35px;
+            top: 15px;
+            font-size: 40px;
+            font-weight: bold;
+            color: #f1f1f1;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #f44336;
+            cursor: pointer;
+        }
+
+        /* Clear floats */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        /* Change styles for cancel button and delete button on extra small screens */
+        @media screen and (max-width: 300px) {
+            .cancelbtn, .deletebtn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main layout:fragment="main-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <h3 th:if="${posts.size()<1}">No Post</h3>
+                <div th:each="post : ${posts}" th:object="${post}">
+                    <div th:replace="fragment/card-post :: post-card(*{uuid},*{title},*{description},*{image},*{user.name},*{user.image},*{categoryList})"></div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div th:replace="fragment/frame-static"></div>
+                <h3 class="mt-4">Popular Category</h3>
+                <section class="mt-4">
+                    <ul style="list-style-type: none;padding: 0">
+                        <h3 th:if="${categories.size()<1}">No Category</h3>
+                        <li class="mt-2" th:each="category : ${categories}" th:object="${category}">
+                            <a  class="btn btn-primary" th:href="@{http://localhost:8080/view-post?category={category}(category=${category.getTitle()})}" th:text="*{title}"></a>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+    <a
+        href="http://localhost:8080/add-post"
+        type="button"
+       class="btn btn-primary rounded-circle "
+       style="position: fixed;bottom: 40px;right: 40px ;height: 80px ;width: 80px;font-size: 50px;display: flex;justify-content: center;align-items: center">
+        <span class=" text-center mb-2">+</span>
+    </a>
+    <div id="id01" class="modal" onclick="document.getElementById('id01').style.display='none'" >
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal" style="background-color: black">&times;</span>
+        <form class="modal-content" method="post" th:action="@{/delete}" >
+            <div class="container con-pop">
+                <h1>Delete Account</h1>
+                <p>Are you sure you want to delete your account?</p>
+                <div class="clearfix">
+                    <button type="button" class="cancelbtn">Cancel</button>
+<!--                    places to delete -->
+                    <button type="submit" class="deletebtn" >
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+<script th:inline="javascript">
+    var modal = document.getElementById('id01');
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

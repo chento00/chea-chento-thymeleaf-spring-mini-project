@@ -1,0 +1,54 @@
+<section xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="post-card(uuidPost,title,description,imgPost,userName,UserImg,listCate)">
+        <div class="card shadow-sm p-3 mb-5 bg-white rounded"
+             style="width: 25rem; position: relative;margin-top: 20px;border: 1px solid darkgrey "
+        >
+            <!--  cover -->
+            <img class="card-img-top"
+                 th:src="@{http://localhost:8080/files/{imgPost}(imgPost=${imgPost})}"
+                 alt="Card image cap" style="height: 300px">
+            <!--  profile -->
+            <img
+                    th:src="@{http://localhost:8080/files/{UserImg}(UserImg=${UserImg})}"
+                    style="top: 270px ;position: absolute ;background-color: white;width: 100px;height:100px;object-fit: contain;border: 2px solid grey"
+                    class="rounded-circle "
+            >
+            <div
+                    style="position: absolute;left: 110px;top: 310px;width: 200px ;height: 70px;line-height: 10px;padding: 10px"
+            >
+                <!--  name -->
+                <p style="font-weight:500;font-size: 20px ;text-overflow: ellipsis;height: 30px" th:text="${userName}"></p>
+                <!--  nickname -->
+                <p style="font-weight:500;font-size: 15px; " class="text-warning" th:text="${#strings.concat('@').concat(userName)}"></p>
+            </div>
+            <div class="card-body" style="margin-top: 50px">
+                <!--  title -->
+                <h5 class="card-title" th:text="${title}">Rose</h5>
+                <!--  description -->
+                <p class="card-text" th:text="${description}">
+
+                </p>
+                <!-- loop category {thumbnail}(thumbnail=${thumbnail})-->
+                <th:block th:each="category : ${listCate}" >
+                    <a  type="button" class="btn btn-warning" th:text="${category.title}"></a>
+                </th:block>
+                <div class="btn-group mt-2" style="display: flex;justify-content: flex-end" >
+<!--                    process view-->
+
+                    <a th:href="@{http://localhost:8080/view-post/{id}(id=${uuidPost})}" type="button" class="btn btn-sm btn-outline-primary">View</a>
+                    <a th:href="@{http://localhost:8080/update-post/{id}(id=${uuidPost})}" type="button" class="btn btn-sm btn-outline-success">Update</a>
+                    <!-- use to send to controler-->
+                    <form th:action="@{/delete-post}" method="post">
+                        <input style="display: none" type="text" name="id" th:value="${uuidPost}" />
+                        <button
+                                class="btn btn-sm btn-outline-danger" type="submit">
+                            Delete
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
